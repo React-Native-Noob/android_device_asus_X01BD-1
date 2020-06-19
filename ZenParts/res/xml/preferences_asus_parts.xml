@@ -37,9 +37,10 @@
         <com.asus.zenparts.preferences.NotificationLedSeekBarPreference
             android:key="notification_led_brightness"
             android:title="@string/notification_led_title"
-            android:max="255"
+            android:max="100"
             app:min="1"
-            android:defaultValue="64" />
+            app:units="%"
+            android:defaultValue="100" />
 
     </PreferenceCategory>
 
