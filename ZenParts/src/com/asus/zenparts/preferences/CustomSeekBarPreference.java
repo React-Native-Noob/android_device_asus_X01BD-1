@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.asus.zenparts.R;
+import com.asus.zenparts.FileUtils;
 
 public class CustomSeekBarPreference extends Preference implements SeekBar.OnSeekBarChangeListener,
         View.OnClickListener, View.OnLongClickListener {
@@ -59,6 +60,10 @@ public class CustomSeekBarPreference extends Preference implements SeekBar.OnSee
 
     protected boolean mTrackingTouch = false;
     protected int mTrackingValue;
+
+    public static final String NOTIF_LED_BLUE_PATH = "/sys/class/leds/blue/brightness";
+    public static final String NOTIF_LED_RED_PATH = "/sys/class/leds/red/brightness";
+    public static final String NOTIF_LED_GREEN_PATH = "/sys/class/leds/green/brightness";
 
     public CustomSeekBarPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
@@ -230,6 +235,10 @@ public class CustomSeekBarPreference extends Preference implements SeekBar.OnSee
     public void onStartTrackingTouch(SeekBar seekBar) {
         mTrackingValue = mValue;
         mTrackingTouch = true;
+        notifyChanged();
+        FileUtils.setValue(NOTIF_LED_BLUE_PATH, 64);
+        FileUtils.setValue(NOTIF_LED_RED_PATH, 64);
+        FileUtils.setValue(NOTIF_LED_GREEN_PATH, 64);
     }
 
     @Override
@@ -238,6 +247,9 @@ public class CustomSeekBarPreference extends Preference implements SeekBar.OnSee
         if (!mContinuousUpdates)
             onProgressChanged(mSeekBar, getSeekValue(mTrackingValue), false);
         notifyChanged();
+        FileUtils.setValue(NOTIF_LED_BLUE_PATH, 0);
+        FileUtils.setValue(NOTIF_LED_RED_PATH, 0);
+        FileUtils.setValue(NOTIF_LED_GREEN_PATH, 0);
     }
 
     @Override
